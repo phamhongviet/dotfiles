@@ -107,7 +107,12 @@ export EDITOR='vim'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # kubectx
-alias kc="kubectx"
+function kc() {
+	local ctx=$1
+	test -e "$HOME/.kube/ctx/$ctx" \
+	&& export KUBECONFIG="$HOME/.kube/ctx/$ctx:$HOME/.kube/config" \
+	|| echo "$HOME/.kube/ctx/$ctx does not exist"
+}
 alias kns="kubens"
 kubectx_mapping[prod]=PROD
 kubectx_namespace='$(kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)' 
@@ -122,13 +127,13 @@ function kubectx_prompt_with_namespace() {
 PROMPT='$(kubectx_prompt_with_namespace)'"$PROMPT"
 
 # kubectx per session
-kubectx_session_file="$(mktemp -t kubectx)"
-export KUBECONFIG="${kubectx_session_file}:${KUBECONFIG:-$HOME/.kube/config}"
-cat <<EOF >"${kubectx_session_file}"
-apiVersion: v1
-kind: Config
-current-context: ""
-EOF
+# kubectx_session_file="$(mktemp -t kubectx)"
+# export KUBECONFIG="${kubectx_session_file}:${KUBECONFIG:-$HOME/.kube/config}"
+# cat <<EOF >"${kubectx_session_file}"
+# apiVersion: v1
+# kind: Config
+# current-context: ""
+# EOF
 
 # aws
 function aws_prompt_info_with_mapping() {
