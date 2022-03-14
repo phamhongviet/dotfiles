@@ -142,4 +142,10 @@ function aws_prompt_info_with_mapping() {
 }
 PROMPT='$(aws_prompt_info_with_mapping)'"$PROMPT"
 
+function terraform_workspace() {
+  test -e .terraform/environment \
+  && echo "tf:$(cat .terraform/environment)"
+}
+PROMPT='$(terraform_workspace) '"$PROMPT"
+
 export GOPATH=$HOME/.go
