@@ -75,7 +75,7 @@ export ZSH_THEME_AWS_SUFFIX=' '
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git kubectl kubectx z brew aws)
+plugins=(git kubectl kubectx z brew aws terraform)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -142,10 +142,8 @@ function aws_prompt_info_with_mapping() {
 }
 PROMPT='$(aws_prompt_info_with_mapping)'"$PROMPT"
 
-function terraform_workspace() {
-  test -e .terraform/environment \
-  && echo "tf:$(cat .terraform/environment)"
-}
-PROMPT='$(terraform_workspace) '"$PROMPT"
+ZSH_THEME_TF_PROMPT_PREFIX='tf:'
+ZSH_THEME_TF_PROMPT_SUFFIX=' '
+PROMPT='$(tf_prompt_info)'"$PROMPT"
 
 export GOPATH=$HOME/.go
